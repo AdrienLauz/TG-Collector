@@ -1,0 +1,95 @@
+syntax = "proto3";
+package telegram.base;
+option java_package = "com.wanfang.proto.im";
+
+// 群组结构
+message ChannelPb {
+    int64 group_id = 1; //群组 id
+    string group_name = 2; //群组名
+    string group_intro = 3; //群简介
+    string group_url = 4; // 群链接
+    string group_type = 5; // 群类别
+    bool is_private = 6; // 是否私有
+    string group_head_img = 7; // 群头像
+    int64 member_count = 8; // 群成员数
+    string gather_time = 9; // 群组基本信息采集时间
+    repeated string group_announcement = 10; // 群公告
+    repeated string group_admin = 11; // 群管理员
+    Location location = 12; //地理信息
+}
+message Location {
+    string address = 1;
+    float long = 2;
+    float lat = 3;
+}
+message UserLocation {
+    int64 distance = 1; // 与定位经纬度的距离
+    float long = 2; // 定位经度
+    float lat = 3; // 定位纬度
+    string area = 4; // 定位地点
+    string date = 5; // 定位时间
+}
+//im 用户结构数据
+message UserPb {
+    string user_id = 1; //用户id
+    string user_nickname = 2; //用户全称
+    string user_username = 3; //群用户的username
+    string user_about = 4; // 用户简介
+    repeated string user_group_id = 5; // 用户所在群id
+    string user_tel = 6; // 电话号码
+    repeated UserStatus user_status = 7; // 群和用户状态对
+    string head_img = 8; // 头像文件存储路径
+    bool user_is_bot = 9; // 是否是机器人
+    string gather_time = 10; // 采集时间
+    ChannelPb channel = 11; // 群组结构中用户的所属群聊
+    UserLocation location = 12; // 定位信息
+}
+message UserStatus {
+    string key = 1;   // 存储 map 的键
+    repeated string value = 2; // 存储 map 的值
+}
+
+//Telegram 消息数据格式
+message MessagePb {
+    int64 msg_id = 1; //消息的id
+    string grouped_id = 2; //组合id
+    string tg_msg = 3; // 消息
+    string msg_time = 4; // 消息发送时间
+    string sender_id = 5; // 消息发送者id
+    int64 group_id = 6; // 群id
+    int64 read_count = 7;  // 消息阅读数
+    MessageReply reply_info = 8;  // 回复消息内容
+    MediaPb file_info = 9; // 文件信息
+    MessageFwdFromPb forward_info = 10; //转发消息内容
+    map<string, UserReaction> users_reactions = 11; // 消息点赞
+    string last_edit_time = 12; // 最后编辑时间
+}
+message UserReaction {
+    repeated string value = 2; // 用户反应的数组，如点赞、表情等
+}
+message MessageReply{
+    bool is_reply = 1; //回复消息的 ID
+    string reply_id = 2;//是否回复
+}
+
+message MessageFwdFromPb {
+    string forward_user_id = 1; // 转发者id
+    string forward_group_id = 2; // 转发群id 
+}
+message MediaPb {
+    string file_type = 1; //媒体类型，（.jpg等）
+    string file_store = 2; //存储的路径
+    string file_name = 3; //文件名称
+    string file_hash = 4; // 文件哈希
+    int64 file_size = 5; // 文件大小
+}
+
+// 备用配置：群组以及用户的结构
+message ChannelJoinUserPb {
+    int64 cid = 1; //群组id
+    int64 uid = 2; //用户id
+    string date = 3; //加入时间
+    string title = 4; // 群名
+    string username = 5; // 群username
+    bool super = 6; //是否超级用户
+}

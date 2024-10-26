@@ -1,0 +1,18 @@
+#See:https://github.com/paulpierre/informer
+version: '3.5'
+#docker >= 17.12
+
+services: 
+  # ================
+  # Informer Service
+  # ================
+  app_informer:
+    build: .
+    container_name: app_informer
+    volumes:
+      - ./app/:/usr/local/app
+    stdin_open: true
+    tty: true
+
+volumes:
+  app: {}
